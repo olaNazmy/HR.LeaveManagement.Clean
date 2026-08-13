@@ -2,13 +2,13 @@
 
 namespace HR.LeaveManagement.Application.Contracts.Persistence
 {
-    internal interface ILeaveTypeRepository<T> :IGenericRepository<LeaveType>
+    public interface ILeaveTypeRepository :IGenericRepository<LeaveType>
     {
-        Task<T> GetAsync();
-        Task<T> GetByIdAsync(int id);
-        Task<T> CreateAsync(T entity);
-        Task<T> UpdateAsync(T entity);
-        Task<T> DeleteAsync(T entity);
+        //Task<T> GetAsync();
+        //Task<T> GetByIdAsync(int id);
+        //Task<T> CreateAsync(T entity);
+        //Task<T> UpdateAsync(T entity);
+        //Task<T> DeleteAsync(T entity);
 
     }
 }
