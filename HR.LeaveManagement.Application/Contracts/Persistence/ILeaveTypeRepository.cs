@@ -4,6 +4,8 @@ namespace HR.LeaveManagement.Application.Contracts.Persistence
 {
     public interface ILeaveTypeRepository :IGenericRepository<LeaveType>
     {
+        Task<bool> IsLeaveTypeNameUnique(string name);
+
         //Task<T> GetAsync();
         //Task<T> GetByIdAsync(int id);
         //Task<T> CreateAsync(T entity);
