@@ -3,12 +3,18 @@
 namespace HR.LeaveManagement.Application.Contracts.Persistence
 {
     public interface ILeaveAllocationRepository : IGenericRepository<LeaveAllocation>
-    { 
-        //Task<T> GetAsync();
-        //Task<T> GetByIdAsync(int id);
-        //Task<T> CreateAsync(T entity);
-        //Task<T> UpdateAsync(T entity);
-        //Task<T> DeleteAsync(T entity);
+    {
+        Task<LeaveAllocation> GetLeaveAllocationWithDetails(int id);
+        Task<List<LeaveAllocation>> GetLeaveAllocationsWithDetails();
+        Task<List<LeaveAllocation>> GetLeaveAllocationsWithDetails(string userId);
+        Task<bool> AllocationExists(string userId, int leaveTypeId, int period);
+        Task AddAllocations(List<LeaveAllocation> allocations);
+        Task<LeaveAllocation> GetUserAllocations(string userId, int leaveTypeId);
+
+
+
+
+
 
     }
 }
