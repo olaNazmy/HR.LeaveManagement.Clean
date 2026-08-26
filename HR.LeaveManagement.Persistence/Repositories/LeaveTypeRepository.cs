@@ -15,9 +15,16 @@ namespace HR.LeaveManagement.Persistence.Repositories
         public LeaveTypeRepository(HrDatabaseContext databaseContext) :base(databaseContext)
         {
         }
-        public async Task<bool> IsLeaveTypeNameUnique(string name)
+        public async Task<bool> LeaveTypeExists(string name, int excludeId)
         {
-            return await _databaseContext.LeaveTypes.AnyAsync(q => q.Name == name);
+            return await _databaseContext.LeaveTypes
+                .AnyAsync(q => q.Name == name && q.Id != excludeId);
+        }
+
+        public async Task<bool> LeaveTypeExists(string name)
+        {
+            return await _databaseContext.LeaveTypes
+                .AnyAsync(q => q.Name == name);
         }
     }
 }
