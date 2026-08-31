@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,9 @@ namespace HR.LeaveManagement.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            // Validation behavior
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
 
             return services;
         }
