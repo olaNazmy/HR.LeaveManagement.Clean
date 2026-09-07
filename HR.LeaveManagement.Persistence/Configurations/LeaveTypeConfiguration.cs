@@ -28,7 +28,6 @@ namespace HR.LeaveManagement.Persistence.Configurations
             builder.Property(q => q.Name)
                 .IsRequired()
                 .HasMaxLength(100);
-            throw new NotImplementedException();
         }
     }
 }

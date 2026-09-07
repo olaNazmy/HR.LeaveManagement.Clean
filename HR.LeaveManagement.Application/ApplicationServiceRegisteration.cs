@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HR.LeaveManagement.Application.Behaviors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,8 +17,9 @@ namespace HR.LeaveManagement.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            // Validation behavior
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            // 
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 
             return services;

@@ -24,7 +24,7 @@ namespace HR.LeaveManagement.Persistence.Repositories
         public async Task<bool> LeaveTypeExists(string name)
         {
             return await _databaseContext.LeaveTypes
-                .AnyAsync(q => q.Name == name);
+                .AnyAsync(q => q.Name == name) == false;
         }
     }
 }
