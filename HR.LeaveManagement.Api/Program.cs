@@ -9,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddPersistenceServices(builder.Configuration);
+// Application Services
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+
 
 builder.Services.AddControllers();
 
@@ -27,7 +32,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 // register the middleware
-app.UseMiddleware<ExceptionMiddleware>();
+//app.UseMiddleware<ExceptionMiddleware>();
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

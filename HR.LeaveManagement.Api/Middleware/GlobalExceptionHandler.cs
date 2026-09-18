@@ -1,49 +1,34 @@
 ﻿using HR.LeaveManagement.Api.Middleware.Models;
 using HR.LeaveManagement.Application.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SendGrid.Helpers.Errors.Model;
 using System.Net;
-using BadRequestException = HR.LeaveManagement.Application.Exceptions.BadRequestException;
-using NotFoundException = HR.LeaveManagement.Application.Exceptions.NotFoundException;
 
 namespace HR.LeaveManagement.Api.Middleware
 {
-    public class ExceptionMiddleware
+    public class GlobalExceptionHandler:IExceptionHandler
     {
-        private readonly RequestDelegate _next;
         private readonly IHostEnvironment _environment;
 
-        public ExceptionMiddleware(RequestDelegate next,IHostEnvironment environment)
+        public GlobalExceptionHandler(IHostEnvironment environment)
         {
-            this._next = next;
             this._environment = environment;
         }
 
-        //
-        public async Task InvokeAsync(HttpContext httpContext)
+        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            try
-            {
-                await _next(httpContext);
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(httpContext, ex);
-            }
-        }
-
-        private async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
-        {
+            // here is the handling 
             HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
             ProblemDetails problem;
-            
-            switch(ex)
+
+            //
+            switch (exception)
             {
                 case BadRequestException badRequestException:
                     statusCode = HttpStatusCode.BadRequest;
                     problem = new CustomProblemValidationDetails
                     {
-                        Title = _environment.IsDevelopment()? badRequestException.Message : "An error occurred processing your request.",
+                        Title = _environment.IsDevelopment() ? badRequestException.Message : "An error occurred processing your request.",
                         Status = (int)statusCode,
                         Detail = badRequestException.InnerException?.Message,
                         Type = nameof(BadRequestException),
@@ -54,28 +39,29 @@ namespace HR.LeaveManagement.Api.Middleware
                     statusCode = HttpStatusCode.NotFound;
                     problem = new ProblemDetails
                     {
-                        Title = _environment.IsDevelopment()? NotFound.Message : "An error occurred processing your request.",
+                        Title = _environment.IsDevelopment() ? NotFound.Message : "An error occurred processing your request.",
                         Status = (int)statusCode,
                         Type = nameof(NotFoundException),
-                      Detail = NotFound.InnerException?.Message,
+                        Detail = NotFound.InnerException?.Message,
                     };
                     break;
                 default:
                     problem = new ProblemDetails
                     {
-                        Title = _environment.IsDevelopment()? ex.Message: "An error occurred processing your request.",
+                        Title = _environment.IsDevelopment() ? exception.Message : "An error occurred processing your request.",
                         Status = (int)statusCode,
                         Type = nameof(HttpStatusCode.InternalServerError),
                         //use env for wrapping the stacktrace for security
                         //Detail = ex.StackTrace
-                        Detail = _environment.IsDevelopment()? ex.StackTrace : "An unexpected error occurred."
+                        Detail = _environment.IsDevelopment() ? exception.StackTrace : "An unexpected error occurred."
                     };
                     break;
             }
 
-            httpContext.Response.StatusCode = (int) statusCode; 
-            await httpContext.Response.WriteAsJsonAsync<object>(problem);
+            httpContext.Response.StatusCode = (int)statusCode;
+            await httpContext.Response.WriteAsJsonAsync<object>(problem,cancellationToken);
 
+            return true;
 
         }
     }
