@@ -5,7 +5,6 @@ using HR.LeaveManagement.Application.Features.LeaveType.Queries.GetAllLeaveTypes
 using HR.LeaveManagement.Application.Features.LeaveType.Queries.GetLeaveTypeDetails;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static HR.LeaveManagement.Application.Features.LeaveType.Queries.GetLeaveTypeDetails.GetLeaveTypesQuery;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

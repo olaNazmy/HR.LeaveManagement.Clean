@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static HR.LeaveManagement.Application.Features.LeaveType.Queries.GetLeaveTypeDetails.GetLeaveTypesQuery;
 
 namespace HR.LeaveManagement.Application.Features.LeaveType.Queries.GetLeaveTypeDetails
 {

@@ -44,6 +44,8 @@ namespace HR.LeaveManagement.Application.Features.LeaveType.Commands.UpdateLeave
 
             //convert to domain entity object
             var leaveTypeToUpdate = await _leaveTypeRepository.GetByIdAsync(request.Id);
+            if (leaveTypeToUpdate is null)
+                throw new NotFoundException(nameof(LeaveType), request.Id);
             _mapper.Map(request, leaveTypeToUpdate);
 
             // update on db
